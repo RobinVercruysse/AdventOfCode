@@ -8,6 +8,10 @@ public class PlantPot {
         this.number = number;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
     public boolean hasPlant() {
         return hasPlant;
     }

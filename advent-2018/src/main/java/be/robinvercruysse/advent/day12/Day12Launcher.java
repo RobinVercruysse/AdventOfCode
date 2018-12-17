@@ -13,8 +13,14 @@ public class Day12Launcher {
         EvolutionRules evolutionRules = readEvolutionRules("be/robinvercruysse/advent/day12/evolutions");
 
         Day12 day12 = new Day12(initialState, evolutionRules);
+        System.out.println(day12.getStateString());
 
-        //System.out.println("Current sum: " + day12.getPlantPotSum());
+        for (int i = 0; i < 20; i++) {
+            day12.evolve();
+            System.out.println(day12.getStateString());
+        }
+
+        System.out.println("sum: " + day12.getPlantPotSum());
     }
 
     private static List<PlantPot> readInitialState(final String filename) throws IOException {
