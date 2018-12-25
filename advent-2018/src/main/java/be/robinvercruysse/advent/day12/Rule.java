@@ -4,10 +4,8 @@ public class Rule {
     private int value = 0;
 
     public Rule(boolean... input) {
-        for (int i = input.length - 1; i >= 0; i--) {
-            if (input[i]) {
-                value += 10 * (i + 1);
-            }
+        for (boolean b : input) {
+            value = (value << 1) + (b ? 1 : 0);
         }
     }
 

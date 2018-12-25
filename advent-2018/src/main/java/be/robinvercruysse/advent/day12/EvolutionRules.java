@@ -11,7 +11,8 @@ public class EvolutionRules {
     }
 
     public boolean evolves(boolean... input) {
-        return rules.get(new Rule(input));
+        Boolean value = rules.get(new Rule(input));
+        return value != null ? value : false;
     }
 
     public class RuleBuilder {
