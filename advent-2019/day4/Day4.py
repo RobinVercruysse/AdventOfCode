@@ -3,7 +3,7 @@ for password in range(137683, 596254):
     passwordstr = str(password)
     never_decreases = True
     has_same_adjacents = False
-    for i in range(1, len(passwordstr) - 1):
+    for i in range(1, len(passwordstr)):
         if i == 1:
             digit1 = int(passwordstr[:1])
             digit2 = int(passwordstr[1:2])
