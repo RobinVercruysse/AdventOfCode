@@ -1,3 +1,6 @@
+from time import time
+
+
 class Moon:
     def __init__(self, x: int, y: int, z: int):
         self.original_x = x
@@ -39,7 +42,28 @@ class Moon:
         return self.get_potential_energy() * self.get_kinetic_energy()
 
     def is_in_original_pos(self):
-        return self.original_x == self.x and self.original_y == self.y and self.original_z == self.z
+        return self.vel_x == 0 and self.vel_y == 0 and self.vel_z == 0 and self.original_x == self.x and self.original_y == self.y and self.original_z == self.z
+
+
+def update_velocities(moon1: Moon, moon2: Moon):
+    if moon1.x > moon2.x:
+        moon1.vel_x += 1
+        moon2.vel_x -= 1
+    elif moon1.x < moon2.x:
+        moon1.vel_x -= 1
+        moon2.vel_x += 1
+    if moon1.y > moon2.y:
+        moon1.vel_y += 1
+        moon2.vel_y -= 1
+    elif moon1.y < moon2.y:
+        moon1.vel_y -= 1
+        moon2.vel_y += 1
+    if moon1.z > moon2.z:
+        moon1.vel_z += 1
+        moon2.vel_z -= 1
+    elif moon1.z < moon2.z:
+        moon1.vel_z -= 1
+        moon2.vel_z += 1
 
 
 moons = []
@@ -51,15 +75,35 @@ with open('input') as fp:
         line = fp.readline()
 drifted = True
 steps = 1
-while drifted:
+moon_a = moons[0]
+moon_b = moons[1]
+moon_c = moons[2]
+moon_d = moons[3]
+start = time()
+update_velocities(moon_a, moon_b)
+update_velocities(moon_a, moon_c)
+update_velocities(moon_a, moon_d)
+update_velocities(moon_b, moon_c)
+update_velocities(moon_b, moon_d)
+update_velocities(moon_c, moon_d)
+moon_a.apply_velocity()
+moon_b.apply_velocity()
+moon_c.apply_velocity()
+moon_d.apply_velocity()
+while not moon_a.is_in_original_pos() or not moon_b.is_in_original_pos() or not moon_c.is_in_original_pos() or not moon_d.is_in_original_pos():
     steps += 1
-    for i in range(0, len(moons) - 1):
-        for j in range(i + 1, len(moons)):
-            moons[i].update_velocity(moons[j])
-            moons[j].update_velocity(moons[i])
-    drifted = False
-    for moon in moons:
-        moon.apply_velocity()
-        if not moon.is_in_original_pos():
-            drifted = True
+    update_velocities(moon_a, moon_b)
+    update_velocities(moon_a, moon_c)
+    update_velocities(moon_a, moon_d)
+    update_velocities(moon_b, moon_c)
+    update_velocities(moon_b, moon_d)
+    update_velocities(moon_c, moon_d)
+    moon_a.apply_velocity()
+    moon_b.apply_velocity()
+    moon_c.apply_velocity()
+    moon_d.apply_velocity()
+    if steps % 1000000 == 0:
+        end = time()
+        print(str(steps) + ' took ' + str((end - start) * 1000) + 'ms')
+        start = time()
 print(steps)
