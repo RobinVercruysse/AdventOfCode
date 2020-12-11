@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>advent-2018</module>
+        <module>advent-2020</module>
     </modules>
 
     <properties>
