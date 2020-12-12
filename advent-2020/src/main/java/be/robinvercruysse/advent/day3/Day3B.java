@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Day3A {
+public class Day3B {
     public static void main(String[] args) {
-        final InputStream inputStream = Day3A.class.getClassLoader().getResourceAsStream("day3.txt");
+        final InputStream inputStream = Day3B.class.getClassLoader().getResourceAsStream("day3.txt");
         if (inputStream == null) {
             System.err.println("File not found");
             return;
@@ -25,8 +25,20 @@ public class Day3A {
                 map[x][y] = line[x] == '#';
             }
         }
-        final int trees = trees(map, 3, 1, lines.size() - 1);
-        System.out.printf("Trees: %d%n", trees);
+        final List<Map.Entry<Integer, Integer>> slopes = Arrays.asList(
+                new AbstractMap.SimpleEntry<>(1, 1),
+                new AbstractMap.SimpleEntry<>(3, 1),
+                new AbstractMap.SimpleEntry<>(5, 1),
+                new AbstractMap.SimpleEntry<>(7, 1),
+                new AbstractMap.SimpleEntry<>(1, 2)
+        );
+        long product = 1;
+        final int maxY = lines.size() - 1;
+        for (Map.Entry<Integer, Integer> slope : slopes) {
+            final int trees = trees(map, slope.getKey(), slope.getValue(), maxY);
+            product *= trees;
+        }
+        System.out.printf("Product: %d%n", product);
     }
 
     private static int trees(final boolean[][] map, final int slopeX, final int slopeY, final int maxY) {
