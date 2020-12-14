@@ -3,15 +3,12 @@ package be.robinvercruysse.advent.day10;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//TODO come up with more performant solution
 public class Day10B {
-    private static int DEVICE_RATING = -1;
-    private static long CHAIN_COUNT = 0;
-
     public static void main(String[] args) {
         final InputStream inputStream = Day10B.class.getClassLoader().getResourceAsStream("day10.txt");
         if (inputStream == null) {
@@ -21,18 +18,22 @@ public class Day10B {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         final List<Integer> adapters = reader.lines().map(Integer::parseInt).sorted().collect(Collectors.toList());
         adapters.add(0, 0);//insert outlet rating 0 at start of list
-        DEVICE_RATING = adapters.get(adapters.size() - 1) + 3;
-        chains(adapters, 0);
-        System.out.printf("Chain count: %d%n", CHAIN_COUNT);
-    }
+        final int deviceRating = adapters.get(adapters.size() - 1) + 3;
+        final Map<Integer, Long> adapterPathCount = new HashMap<>();
 
-    private static void chains(final List<Integer> adapters, final int rating) {
-        for (int i = 1; i <= 3 && rating + i <= DEVICE_RATING; i++) {
-            if (rating + i == DEVICE_RATING) {
-                CHAIN_COUNT++;
-            } else if (adapters.contains(rating + i)) {
-                chains(adapters, rating + i);
+        for (int i = adapters.size() - 1; i >= 0; i--) {
+            final int rating = adapters.get(i);
+            long paths = 0;
+            for (int j = 1; j <= 3 && rating + j <= deviceRating; j++) {
+                if (rating + j == deviceRating) {
+                    paths++;
+                } else if (adapterPathCount.containsKey(rating + j)) {
+                    paths += adapterPathCount.get(rating +j);
+                }
             }
+            adapterPathCount.put(rating, paths);
         }
+
+        System.out.printf("Chain count: %d%n", adapterPathCount.get(0));
     }
 }
