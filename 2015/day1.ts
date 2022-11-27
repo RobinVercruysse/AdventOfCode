@@ -1,14 +1,9 @@
-import {readFile} from 'fs'
+import {getInput} from "./helper";
 
-readFile('input/day1.txt', 'utf-8', (err, data) => {
-    if (err) {
-        console.error(err)
-        return
-    }
-    let [floor, firstBasement] = navigate(data)
-    console.log("Floor: " + floor)
-    console.log("First basement index: " + firstBasement)
-})
+let instructions: string = getInput('input/day1.txt')
+let [floor, firstBasement] = navigate(instructions)
+console.log("Floor: " + floor)
+console.log("First basement index: " + firstBasement)
 
 function navigate(instructions: string) {
     let firstBasement: number = -1
