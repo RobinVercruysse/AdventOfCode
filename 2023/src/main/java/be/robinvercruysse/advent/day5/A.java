@@ -55,7 +55,7 @@ public class A implements DaySolver<Long> {
         return mappers;
     }
 
-    private static List<Long> parseSeeds(final String line) {
+    public static List<Long> parseSeeds(final String line) {
         final String[] parts = line.split(" ");
         final List<Long> seeds = new ArrayList<>();
         for (int i = 1; i < parts.length; i++) {

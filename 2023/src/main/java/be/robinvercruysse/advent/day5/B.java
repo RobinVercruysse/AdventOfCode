@@ -4,8 +4,11 @@ import be.robinvercruysse.advent.DaySolver;
 import be.robinvercruysse.advent.Utils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
+// TODO this could probably be solved more cleanly with a linked list
 public class B implements DaySolver<Long> {
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         System.out.println(Utils.solve(B.class, "day5.txt"));
@@ -13,9 +16,54 @@ public class B implements DaySolver<Long> {
 
     @Override
     public Long solve(Stream<String> inputLines) {
+        final List<String> lines = inputLines.toList();
+        final List<SeedRange> seedRanges = parseSeedRanges(lines.getFirst());
+        final List<Mapper> mappers = A.parseMappers(lines.subList(1, lines.size())).reversed();
 
-
-        return 0L;
+        List<ShortcutRange> shortcutRanges = new ArrayList<>();
+        for (Mapper mapper : mappers) {
+            shortcutRanges = calculateShortcutRanges(shortcutRanges, mapper.getRanges());
+        }
+        final List<CalculatedRange> calculatedRanges = new ArrayList<>();
+        for (SeedRange seedRange : seedRanges) {
+            calculatedRanges.addAll(calculateRanges(shortcutRanges, seedRange));
+        }
+        long lowestLocation = Long.MAX_VALUE;
+        for (CalculatedRange calculatedRange : calculatedRanges) {
+            lowestLocation = Math.min(lowestLocation, calculatedRange.start());
+        }
+        return lowestLocation;
     }
 
+    private static List<CalculatedRange> calculateRanges(final List<ShortcutRange> shortcutRanges, final SeedRange seedRange) {
+
+        return new ArrayList<>(); // TODO implement
+    }
+
+    private static List<ShortcutRange> calculateShortcutRanges(final List<ShortcutRange> shortcutRanges, final List<Range> mapperRanges) {
+        final List<ShortcutRange> result = new ArrayList<>();
+        for (ShortcutRange shortcutRange : shortcutRanges) {
+            for (Range range : mapperRanges) {
+                // TODO brain is mush
+            }
+        }
+        return result;
+    }
+
+    private static List<SeedRange> parseSeedRanges(final String line) {
+        final String[] parts = line.split(" ");
+        final List<SeedRange> seedRanges = new ArrayList<>();
+        for (int i = 1; i < parts.length; i += 2) {
+            final int start = Integer.parseInt(parts[i]);
+            final int length = Integer.parseInt(parts[i + 1]);
+            seedRanges.add(new SeedRange(start, length));
+        }
+        return seedRanges;
+    }
+
+    private record SeedRange(long start, long length) {}
+
+    private record ShortcutRange(long min, long max, long modifier) {}
+
+    private record CalculatedRange(long start, long end) {}
 }

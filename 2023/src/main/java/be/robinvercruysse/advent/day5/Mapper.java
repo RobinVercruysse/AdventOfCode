@@ -20,4 +20,8 @@ public class Mapper {
         }
         return result;
     }
+
+    public List<Range> getRanges() {
+        return ranges;
+    }
 }
