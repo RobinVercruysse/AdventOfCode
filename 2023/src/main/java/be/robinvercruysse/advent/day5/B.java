@@ -6,9 +6,10 @@ import be.robinvercruysse.advent.Utils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
-// TODO this could probably be solved more cleanly with a linked list
 public class B implements DaySolver<Long> {
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         System.out.println(Utils.solve(B.class, "day5.txt"));
@@ -18,36 +19,20 @@ public class B implements DaySolver<Long> {
     public Long solve(Stream<String> inputLines) {
         final List<String> lines = inputLines.toList();
         final List<SeedRange> seedRanges = parseSeedRanges(lines.getFirst());
-        final List<Mapper> mappers = A.parseMappers(lines.subList(1, lines.size())).reversed();
+        final List<Mapper> mappers = A.parseMappers(lines.subList(1, lines.size()));
 
-        List<ShortcutRange> shortcutRanges = new ArrayList<>();
+        final NavigableMap<Long, Long> modifiers = new TreeMap<>();
+        modifiers.put(Long.MIN_VALUE, 0L);
+        modifiers.put(Long.MAX_VALUE, 0L);
+
         for (Mapper mapper : mappers) {
-            shortcutRanges = calculateShortcutRanges(shortcutRanges, mapper.getRanges());
-        }
-        final List<CalculatedRange> calculatedRanges = new ArrayList<>();
-        for (SeedRange seedRange : seedRanges) {
-            calculatedRanges.addAll(calculateRanges(shortcutRanges, seedRange));
-        }
-        long lowestLocation = Long.MAX_VALUE;
-        for (CalculatedRange calculatedRange : calculatedRanges) {
-            lowestLocation = Math.min(lowestLocation, calculatedRange.start());
-        }
-        return lowestLocation;
-    }
-
-    private static List<CalculatedRange> calculateRanges(final List<ShortcutRange> shortcutRanges, final SeedRange seedRange) {
-
-        return new ArrayList<>(); // TODO implement
-    }
-
-    private static List<ShortcutRange> calculateShortcutRanges(final List<ShortcutRange> shortcutRanges, final List<Range> mapperRanges) {
-        final List<ShortcutRange> result = new ArrayList<>();
-        for (ShortcutRange shortcutRange : shortcutRanges) {
-            for (Range range : mapperRanges) {
-                // TODO brain is mush
+            for (Range range : mapper.getRanges()) {
+                final long modifier = range.destination() - range.source();
+                // TODO figure out how to collapse multiple mappers
             }
         }
-        return result;
+
+        return 0L;
     }
 
     private static List<SeedRange> parseSeedRanges(final String line) {
@@ -62,8 +47,4 @@ public class B implements DaySolver<Long> {
     }
 
     private record SeedRange(long start, long length) {}
-
-    private record ShortcutRange(long min, long max, long modifier) {}
-
-    private record CalculatedRange(long start, long end) {}
 }
