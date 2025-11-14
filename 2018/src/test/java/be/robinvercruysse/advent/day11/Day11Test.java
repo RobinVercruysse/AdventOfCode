@@ -1,11 +1,11 @@
 package be.robinvercruysse.advent.day11;
 
-import javafx.util.Pair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day11Test {
     @Test
@@ -43,7 +43,7 @@ public class Day11Test {
         Cell highestPowerLevelTopLeftCell = null;
 
         for (int squareSize = 1; squareSize < 301; squareSize++) {
-            Pair<Cell, Integer> result = new Day11().getLargestPowerSquare(18, squareSize);
+            Map.Entry<Cell, Integer> result = new Day11().getLargestPowerSquare(18, squareSize);
             if (result.getValue() > highestPowerLevel) {
                 highestPowerLevel = result.getValue();
                 highestPowerLevelSquareSize = squareSize;

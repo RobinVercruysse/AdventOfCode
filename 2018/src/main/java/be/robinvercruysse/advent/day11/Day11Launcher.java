@@ -1,11 +1,10 @@
 package be.robinvercruysse.advent.day11;
 
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 public class Day11Launcher {
     public static void main(String[] args) throws IOException {
@@ -22,7 +21,7 @@ public class Day11Launcher {
         Cell highestPowerLevelTopLeftCell = null;
 
         for (int squareSize = 1; squareSize < 301; squareSize++) {
-            Pair<Cell, Integer> result = new Day11().getLargestPowerSquare(gridSerialNr, squareSize);
+            Map.Entry<Cell, Integer> result = new Day11().getLargestPowerSquare(gridSerialNr, squareSize);
             if (result.getValue() > highestPowerLevel) {
                 highestPowerLevel = result.getValue();
                 highestPowerLevelSquareSize = squareSize;

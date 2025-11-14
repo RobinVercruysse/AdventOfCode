@@ -1,7 +1,5 @@
 package be.robinvercruysse.advent.day11;
 
-import javafx.util.Pair;
-
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +13,7 @@ public class Day11 {
         squareCache.clear();
     }
 
-    public Pair<Cell, Integer> getLargestPowerSquare(int gridSerialNr, int squareSize) {
+    public Map.Entry<Cell, Integer> getLargestPowerSquare(int gridSerialNr, int squareSize) {
         int highestPowerLevel = Integer.MIN_VALUE;
         Cell highestPowerLevelCell = null;
 
@@ -45,7 +43,7 @@ public class Day11 {
             }
         }
 
-        return new Pair<>(highestPowerLevelCell, highestPowerLevel);
+        return Map.entry(highestPowerLevelCell, highestPowerLevel);
     }
 
     private int getPowerLevelOfSquare(int gridSerialNr, int squareSize, int topLeftX, int topLeftY) {
